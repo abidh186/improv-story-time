@@ -17,6 +17,7 @@ const App: React.FC = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const chatBoxRef = useRef<HTMLDivElement>(null);
   const apiUrl = import.meta.env.VITE_API_BASE_URL;
+  console.log({apiUrl})
 
   useEffect(() => {
     if (chatBoxRef.current) {
@@ -38,6 +39,7 @@ const App: React.FC = () => {
         responseText = errorData.error || 'Failed to fetch response';
       } else {
         const data = await response.json();
+        console.log({data})
         responseText = data.response;
       }
     } catch (error) {
