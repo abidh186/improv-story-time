@@ -10,7 +10,7 @@ const App: React.FC = () => {
 
   const [inputValue, setInputValue] = useState<string>('');
 
-  const [messages, setMessages] = useState<Message[]>([    {text: "Let's create a story together! Where would you like the story to begin today? Start from anywhere and we'll take it from there.1", isUser: false}]);
+  const [messages, setMessages] = useState<Message[]>([    {text: "Let's create a story together! Where would you like the story to begin today? Start from anywhere and we'll take it from there.", isUser: false}]);
 
   const [loading, setLoading] = useState<boolean>(false);
 
