@@ -1,13 +1,14 @@
+// api/generate.js
 const express = require('express');
 const bodyParser = require('body-parser');
 const { GoogleGenerativeAI, HarmBlockThreshold, HarmCategory } = require('@google/generative-ai');
-const cors = require('cors');
-const app = express();
 const port = process.env.PORT || 3000;
-require('dotenv').config();
+const cors = require('cors');
 
+const app = express();
 app.use(bodyParser.json());
 app.use(cors());
+require('dotenv').config();
 
 const safetySettings = [
   {
@@ -28,24 +29,21 @@ const safetySettings = [
   },
 ];
 
-const promptSetup = "We want to create a story with a user. The idea is for user and chatbot (you the AI) to create a story together. Initially user is given a prompt `Let's create a story together! Where would you like the story to begin today? Start from anywhere and we'll take it from there.` and they share the start of a story. Then you tell the next part of that story. And then user tells the part after that and so it goes. Your job is to generate less 200 charaters at a time. Keep the story going. Do not wrap up the story unless it is close to 10000 characters. You want to pickup where the story left off. Do not repeat previous part of the story. You goal is to advance the story and only add to the story as it develops. Here is the story so far: "
-let runningStory = "Initial Prompt: Where will the story begin today?"
+const promptSetup = "We want to create a story with a user...";
+let runningStory = "Initial Prompt: Where will the story begin today?";
 
 async function generateAndLogText(inputText) {
   runningStory += "\n" + "user said: " + inputText;
   try {
-  
     const apiKey = process.env.GOOGLE_API_KEY;
     if (!apiKey) {
       throw new Error('GOOGLE_API_KEY is not defined in environment variables');
     }
     const genAI = new GoogleGenerativeAI(apiKey);
 
-  
     const model = genAI.getGenerativeModel({ model: 'gemini-pro', safetySettings });
     const result = await model.generateContent([promptSetup + runningStory]);
 
-  
     const generatedText = await result.response.text();
     runningStory += "\n" + "AI said: " + generatedText;
     return generatedText;
@@ -77,3 +75,5 @@ app.post('/generate', async (req, res) => {
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
 });
+
+module.exports = app;
