@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const { GoogleGenerativeAI, HarmBlockThreshold, HarmCategory } = require('@google/generative-ai');
 const cors = require('cors');
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 require('dotenv').config();
 
 app.use(bodyParser.json());
@@ -33,7 +33,6 @@ let runningStory = "Initial Prompt: Where will the story begin today?"
 
 async function generateAndLogText(inputText) {
   runningStory += "\n" + "user said: " + inputText;
-  console.log(1, {inputText, runningStory})
   try {
   
     const apiKey = process.env.GOOGLE_API_KEY;
@@ -48,14 +47,11 @@ async function generateAndLogText(inputText) {
 
   
     const generatedText = await result.response.text();
-    console.log({inputText, inputPrompt: promptSetup + runningStory, generatedText})
     runningStory += "\n" + "AI said: " + generatedText;
-    console.log(2, {inputText, inputPrompt: (promptSetup + runningStory), runningStory, generatedText})
     return generatedText;
 
   } catch (error) {
     runningStory += "\n" + "in case of error: " + inputText;
-  
     console.error('Error in generateAndLogText:', error);
     throw new Error(error.message || 'An error occurred while generating text');
   }

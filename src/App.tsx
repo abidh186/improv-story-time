@@ -7,36 +7,33 @@ interface Message {
 }
 
 const App: React.FC = () => {
-
+  
   const [inputValue, setInputValue] = useState<string>('');
-
+  
   const [messages, setMessages] = useState<Message[]>([    {text: "Let's create a story together! Where would you like the story to begin today? Start from anywhere and we'll take it from there.", isUser: false}]);
-
+  
   const [loading, setLoading] = useState<boolean>(false);
-
+  
   const inputRef = useRef<HTMLInputElement>(null);
   const chatBoxRef = useRef<HTMLDivElement>(null);
+  const apiUrl = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
     if (chatBoxRef.current) {
       chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
     }
-  }, [messages]); // Trigger useEffect every time messages change
+  }, [messages]); 
   const handleGenerateText = async (input: string): Promise<string> => {
     setLoading(true);
     let responseText = '';
-
     try {
-      const response = await fetch('http://localhost:3000/generate', {
+      const response = await fetch(`${apiUrl}/generate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ text: input })
       });
 
-      console.log({response})
-
       if (!response.ok) {
-      
         const errorData = await response.json();
         responseText = errorData.error || 'Failed to fetch response';
       } else {
