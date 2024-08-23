@@ -1,9 +1,8 @@
-// api/generate.js
 const express = require('express');
-const bodyParser = require('body-parser');
-const { GoogleGenerativeAI, HarmBlockThreshold, HarmCategory } = require('@google/generative-ai');
 const port = process.env.PORT || 3000;
 const cors = require('cors');
+const { GoogleGenerativeAI, HarmBlockThreshold, HarmCategory } = require('@google/generative-ai');
+const bodyParser = require('body-parser');
 
 const app = express();
 app.use(bodyParser.json());
@@ -29,8 +28,8 @@ const safetySettings = [
   },
 ];
 
-const promptSetup = "We want to create a story with a user...";
-let runningStory = "Initial Prompt: Where will the story begin today?";
+const promptSetup = "We want to create a story with a user. The idea is for user and chatbot (you the AI) to create a story together. Initially user is given a prompt `Let's create a story together! Where would you like the story to begin today? Start from anywhere and we'll take it from there.` and they share the start of a story. Then you tell the next part of that story. And then user tells the part after that and so it goes. Your job is to generate less 200 charaters at a time. Keep the story going. Do not wrap up the story unless it is close to 10000 characters. You want to pickup where the story left off. Do not repeat previous part of the story. You goal is to advance the story and only add to the story as it develops. Here is the story so far: "
+let runningStory = "Let's create a story together! Where would you like the story to begin today? Start from anywhere and we'll take it from there.";
 
 async function generateAndLogText(inputText) {
   runningStory += "\n" + "user said: " + inputText;
@@ -72,8 +71,12 @@ app.post('/generate', async (req, res) => {
   }
 });
 
-app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
-});
+// Conditional app.listen() for local development
+if (!process.env.VERCEL) {
+  app.listen(port, () => {
+    console.log(`Server running locally on http://localhost:${port}`);
+  });
+}
 
+// Export the app for serverless function handling in Vercel
 module.exports = app;
