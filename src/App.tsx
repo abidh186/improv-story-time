@@ -11,7 +11,7 @@ const App: React.FC = () => {
     const [inputValue, setInputValue] = useState<string>('');
     const [messages, setMessages] = useState<Message[]>([
         {
-            text: "Let's make up a story together! You can start the story anywhere. Make up anything you can think of. I will then add to the story a little bit. You will then add a little more and on the story will do. Let's begin!",
+            text: 'Let’s create a story together! You can start it wherever you like and make up anything that comes to mind. I’ll add to it, and then you can continue from there. Let’s see where our imagination takes us. Ready to begin?',
             isUser: false,
         },
     ]);
