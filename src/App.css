@@ -2,6 +2,7 @@ html, body {
   height: 100vh;
   margin: 0px;
 }
+
 #root {
   max-width: 100%;
   height: 100%;
@@ -13,18 +14,22 @@ html, body {
   padding: 0;
   text-align: center;
 }
+
 .App {
   padding: 20px;
   width: 80%;
   min-height: 84vh;
-  margin: 4vh;
+  margin: 4vh auto;
+  display: flex;
+  flex-direction: column;
 }
-.chat-box {
+
+.chat-box {  
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   max-width: auto;
   width: 100%;
-  margin: auto;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -34,6 +39,7 @@ html, body {
   overflow-y: auto; 
   overflow-anchor: none;
 }
+
 .message {
   padding: 10px;
   margin: 5px 0;
@@ -41,30 +47,89 @@ html, body {
   max-width: 80%;
   overflow-anchor: auto;
 }
+
 .user-message {
   align-self: flex-end;
   background-color: #d1e7dd;
   color: #0f5132;
 }
+
 .bot-message {
   align-self: flex-start;
   background-color: #f8d7da;
   color: #721c24;
 }
-input {
-  margin: 10px auto;
-  padding: 10px;
-  font-size: 16px;
+
+.input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
   width: 100%;
 }
+
+input {
+  box-sizing: border-box;
+  flex: 1;
+  padding: 10px 48px 10px 10px; 
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin: 10px auto;
+  width: 100%; 
+}
+
+input:focus {
+  outline: none;
+  border-color: #aaa;
+}
+
 button {
+  width: 100px;
+  align-self: center;
   padding: 10px 20px;
   font-size: 16px;
+  border: none;
+  border-radius: 4px;
   cursor: pointer;
+  background-color: #4CAF50;
+  border: 1px solid #4CAF50;
+  color: white;
 }
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  border: 1px solid #ccc;
+  color: rgb(59, 56, 56);
+}
+
+.char-indicator {
+  position: absolute;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+}
+
+.char-indicator svg {
+  transform: rotate(-90deg);
+  width: 100%;
+  height: 100%;
+}
+
+.char-indicator circle {
+  fill: none;
+  stroke-width: 2;
+  transition: stroke-dashoffset 0.3s ease, stroke 0.3s ease;
+}
+
+.char-indicator text {
+  font-family: Arial, sans-serif;
+  dominant-baseline: middle;
+}
+
 @media (max-width: 768px) {
   #root {
-      width: 100%;
+    width: 100%;
   }
   body {
     margin: 0px
@@ -72,23 +137,28 @@ button {
   .App {
     padding: 0px;
     margin: 0px;
+    width: 100%;
+    height: 100vh; 
   }
   .chat-box {
-    padding: 0px;
     height: calc(100vh - 250px);
+    max-height: none; 
   }
   input {
-    width: calc(100% - 20px)
+    width: calc(100% - 20px);
   }
 }
+
 @media (max-width: 480px) {
   .App {
-      padding: 0px;
-      margin: 0px;
-      width: 100%;
+    padding: 0px;
+    margin: 0px;
+    width: 100%;
+    height: 100vh; 
   }
   .chat-box {
-    height: calc(100vh - 210px);
+    height: 100%;
+    border: none;
   }
   button {
     width: 100%;
